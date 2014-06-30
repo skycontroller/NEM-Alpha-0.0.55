@@ -1,0 +1,498 @@
+@import 'compass';
+@import '../config';
+@import '../mixins';
+
+#dashboard {
+	margin-left: -9px;
+	margin-top: 9px;
+}
+
+.tile {
+	$tile-topPadding: 16px;
+	$tile-bottomPadding: 16px;
+	$tile-rightPadding: 20px;
+	$tile-leftPadding: 20px;
+	background-color: #fff;
+	color: #252a34;
+	padding: $tile-topPadding $tile-rightPadding $tile-bottomPadding $tile-leftPadding;
+	font-size: 13px;
+
+	.dragger {
+		position: absolute;
+		top: 8px;
+		right: 8px;
+		cursor: move;
+		@include opacity(0);
+		@include transition(opacity .3s);
+		/*text-align: center;
+		padding: 0;
+		color: #ebebeb;
+		font-size: 14px;
+		line-height: .9em;*/
+		background-image: url(../../images/Move.png);
+		width: 15px;
+		height: 16px;
+	}
+	&:hover .dragger {
+		@include opacity(1);
+	}
+
+	.main-title {
+		font-size: 12px;
+		font-weight: $fontWeight-black;
+		text-transform: uppercase;
+		color: #444444;
+		margin-bottom: 5px;
+		cursor: pointer;
+		display: inline-block;
+	}
+
+	.read-more {
+		$color: #fff;
+		color: $color;
+		font-weight: $fontWeight-medium;
+		&:hover {
+			color: darken($color, 15%);
+		}
+	}
+
+	.not-available {
+		color: rgba(#000, .4);
+		font-size: 11px;
+		font-weight: $fontWeight-bold;
+		&.whole {
+			position: absolute;
+			bottom: 15px;
+			right: 15px;
+		}
+	}
+
+	input, button, select {
+		height: 27px;
+	}
+
+	&.wallet {
+		$bgColor: #278fd7;
+		$dropdown-bg: #ebebeb;
+		background-color: $bgColor;
+		color: #444444;
+		font-size: 11.25;
+		z-index: 3; //so that the dropdownlist is placed over other tiles
+		h1 {
+			color: #fff;
+		}
+		.selecter {
+			margin-top: 20px;
+			width: 100%;
+			background-color: $dropdown-bg;
+			font-weight: $fontWeight-medium;
+		}
+		.selecter-selected {
+			padding: .5em;
+		}
+		button {
+			$background: #1b5278;
+			background-color: $background;
+			color: #fff;
+			padding-left: 11px;
+			padding-right: 11px;
+			font-weight: $fontWeight-black;
+			&:hover {
+				background-color: lighten($background, 10%);
+			}
+		}
+		.submit {
+			margin-top: 18px;
+			text-align: right;
+		}
+	}
+
+	&.balance {
+		.last-month, .current {
+			text-align: right;
+			font-weight: $fontWeight-light;
+		}
+		.last-month {
+			margin-bottom: 15px;
+			.number {
+				font-size: 12px;
+			}
+		}
+		.current {
+			font-size: 32px;
+		}
+		.variation {
+			font-size: 9px;
+			color: #13abfa;
+			vertical-align: baseline;
+		}
+	}
+
+	&.assets {
+		background-color: #074661;
+		color: #fff;
+		h1 {
+			color: #fff;
+		}
+		.assets-count {
+			font-size: 19.5px;
+			text-align: right;
+			position: absolute;
+			right: $tile-rightPadding;
+			bottom: $tile-bottomPadding;
+		}
+	}
+
+	&.apps {
+		$appIcon-size: 32px;
+		$bgColor: #252a34;
+		background-color: $bgColor;
+		color: #fff;
+		h1 {
+			color: #fff;
+		}
+		.scrollable {
+			height: 74px;
+			margin-top: 15px;
+		}
+		.scroller-bar {
+			background-color: $bgColor;
+		}
+		.scroller-handle {
+			background-color: #3b4049;
+		}
+		.app {
+			@extend %clearfix;
+			margin-bottom: 18px;
+			cursor: pointer;
+		}
+		.app-icon, .app-info, .delete-button {
+			float: left;
+		}
+		.app-icon {
+			width: $appIcon-size;
+			height: $appIcon-size;
+			margin-right: 15px;
+		}
+		.app-info {
+			margin-right: 10px;
+			a {
+				h1 {
+					color: #fff;
+					font-size: 12.75px;
+					font-weight: $fontWeight-black;
+					text-transform: none;
+					margin-bottom: 2px;
+					@include transition(color .3s);
+					@include ellipsis-overflow(100px);
+				}
+				&:hover h1 {
+					color: #e6801d;
+				}
+			}
+		}
+		.delete-button {
+			$color: #424c5f;
+			color: $color;
+			height: $appIcon-size;
+			line-height: $appIcon-size;
+			&:hover {
+				color: lighten($color, 25%);
+			}
+		}
+		.vendor-name {
+			font-size: 9px;
+			font-weight: $fontWeight-light;
+			color: #a4a4a4;
+		}
+	}
+
+	&.news {
+		background-color: #27d782;
+		h1 {
+			font-size: 16px;
+			color: #252a34;
+		}
+		.news-article {
+			h1 {
+				font-size: 11.25px;
+				font-weight: $fontWeight-bold;
+				text-transform: none;
+				margin-bottom: 4px;
+			}
+		}
+		$bulletWidth: 5px;
+		$bulletLeftMargin: 10px;
+		.news-preview {
+			@extend %clearfix;
+		}
+		.viewport {
+			width: calc(100% - #{$bulletWidth} - #{$bulletLeftMargin});
+			height: 82px;
+			float: left;
+		}
+		.news-article {
+			height: 82px;
+		}
+		.bullets {
+			float: right;
+		}
+		.bullet {
+			$bgColor: #198350;
+			display: block;
+			width: $bulletWidth;
+			height: $bulletWidth;
+			margin-bottom: 10px;
+			background-color: $bgColor;
+			border: 1px solid $bgColor;
+			@include transition(background-color .3s);
+			&.active {
+				background-color: transparent;
+			}
+		}
+	}
+
+	&.messages {
+		background-color: #e6801d;
+		h1 {
+			font-size: 16px;
+			color: #252a34;
+		}
+		.viewport {
+			height: 82px;
+		}
+		.message {
+			position: relative;
+			height: 82px;
+			footer {
+				text-align: right;
+				position: absolute;
+				bottom: 0;
+				right: 0;
+			}
+		}
+		.sender {
+			$color: #fff;
+			color: $color;
+			font-weight: $fontWeight-light;
+			&:hover {
+				color: darken($color, 20%);
+			}
+			img {
+				width: $avatar-tiny;
+				height: $avatar-tiny;
+				margin-left: 5px;
+			}
+			span, img {
+				vertical-align: middle;
+			}
+		}
+	}
+
+	&.nem-value {
+		background-image: url(../../images/world-map.png);
+		.value {
+			font-size: 30px;
+			font-weight: $fontWeight-light;
+		}
+		$dropdown-bg: #77e6b1;
+		.selecter {
+			@include inline-block();
+			vertical-align: text-bottom;
+			font-weight: $fontWeight-bold;
+		}
+		.variation {
+			font-size: 12px;
+			color: #df241b;
+			margin-left: 5px;
+			vertical-align: -5px;
+		}
+	}
+
+	&.importance {
+		background-color: #736086;
+		color: #fff;
+		h1 {
+			color: #fff;
+		}
+		.foraging-btn {
+			position: absolute;
+			top: 50%;
+			left: 0;
+			@include transform(translateY(-50%));
+			background-color: #7c6890;
+			font-size: 16px;
+			padding: 0 16px;
+			height: 42px;
+			line-height: 42px;
+
+			&:before {
+				vertical-align: -3px;
+				margin-right: 8px;
+				font-size: 19px;
+			}
+			.hover {
+				display: none;
+			}
+
+			&:hover {
+				.status {
+					display: none;
+				}
+				.hover {
+					display: initial;
+				}
+			}
+		}
+		.content {
+			text-align: right;
+		}
+		.number {
+			font-size: 71px;
+			font-weight: $fontWeight-light;
+			line-height: 66px;
+			margin-top: 10px;
+		}
+		.text {
+			font-size: 26px;
+			font-weight: $fontWeight-black;
+			color: #453456;
+			margin-top: 10px;
+		}
+	}
+
+	&.transactions {
+		$text-color: #252a34;
+		color: $text-color;
+
+		.main-title {
+			margin-bottom: 12px;
+		}
+
+		.overview {
+			@extend %clearfix;
+			font-size: 36px;
+			font-weight: $fontWeight-light;
+			border-bottom: 1px solid #ebebeb;
+			margin-bottom: 12px;
+			padding-bottom: 15px;
+			h1 {
+				font-size: 23px;
+				font-weight: $fontWeight-black;
+				text-transform: none;
+				margin-bottom: 0;
+				color: #736086;
+			}
+		}
+
+		.send-nem-btn {
+			$bgColor: #41ce7d;
+			background-color: $bgColor;
+			color: #fff;
+			font-size: 13px;
+			font-weight: $fontWeight-medium;
+			margin-left: 10px;
+			&:before {
+				font-size: 16px;
+				margin-right: 5px;
+				vertical-align: -2px;
+			}
+			&:hover {
+				background-color: lighten($bgColor, 10%);
+			}
+		}
+
+		.balance {
+			display: inline-block;
+		}
+
+		table {
+			width: 100%;
+			th {
+				font-size: 14px;
+				font-weight: $fontWeight-black;
+				padding: 7px 5px 12px;
+				text-align: left;
+			}
+			td {
+				font-size: 13px;
+				padding: 7px 5px;
+				text-align: left;
+				font-weight: $fontWeight-medium;
+			}
+			.type {
+				position: relative;
+				top: 2px;
+				font-size: 15px;
+				&.incoming {
+					color: #27ae60;
+				}
+				&.outgoing {
+					color: #c0392b;
+				}
+				&.pending {
+					color: #d1d1d1;
+					font-size: 13px;
+				}
+			}
+			.sender, .message {
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+				
+			}
+			.sender {
+				max-width: 150px;
+			}
+			.message {
+				max-width: 235px;
+			}
+			td.details {
+				font-weight: $fontWeight-bold;
+				color: #3498db;
+				text-decoration: underline;
+				cursor: pointer;
+			}
+			.confirmations {
+				text-align: center;
+			}
+			.fee, .amount {
+				text-align: right;
+			}
+		}
+
+		.dimmed {
+			color: #d1d1d1;
+		}
+
+		.see-all {
+			$color: #252a34;
+			color: $color;
+			font-weight: $fontWeight-bold;
+			text-align: right;
+			margin-top: 8px;
+
+			.arrow {
+				font-size: 16px;
+				vertical-align: -3px;
+			}
+		}
+
+		.no-transactions {
+			color: rgba(#000, .4);
+			font-size: 12px;
+			font-style: italic;
+			margin-top: .5em;
+		}
+	}		
+}
+
+textarea {
+	resize: none;
+}
+
+#nem-value-chart {
+	width: 100%;
+	height: 180px;
+	margin-top: 16px;
+}

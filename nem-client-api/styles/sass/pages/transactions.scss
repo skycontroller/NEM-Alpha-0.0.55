@@ -1,0 +1,199 @@
+@import 'compass';
+@import '../config';
+@import '../mixins';
+
+#transactions-page {
+	margin-top: 25px;
+	margin-bottom: 36px;
+	background-color: #fff;
+	border-top: 8px solid #736086;
+	color: #252a34;
+
+	.head {
+		border-bottom: 1px solid #aeaeae;
+		padding: 34px 0 16px 44px;
+
+		h1 {
+			font-size: 28px;
+			font-weight: $fontWeight-bold;
+			color: #736086;
+			text-transform: uppercase;
+			display: inline-block;
+			vertical-align: middle;
+		}
+
+		.send-nem-btn {
+			$bgColor: #41ce7d;
+			background-color: $bgColor;
+			color: #fff;
+			font-size: 15px;
+			font-weight: $fontWeight-medium;
+			margin-left: 10px;
+			padding: 8px 14px 8px 11px;
+
+			&:before {
+				font-size: 16px;
+				margin-right: 5px;
+				vertical-align: -2px;
+			}
+
+			&:hover {
+				background-color: lighten($bgColor, 10%);
+			}
+		}
+	}
+
+	.overview {
+		margin-top: 20px;
+
+		h1 {
+			font-size: 14px;
+			font-weight: $fontWeight-black;
+			text-transform: none;
+		}
+
+		.balance {
+			font-size: 24px;
+		}
+	}
+
+	.body {
+		padding-bottom: 40px;
+		font-size: 13px;
+	}
+
+	.filter-bar {
+		padding: 20px 25px 30px 44px;
+		@extend %clearfix;
+		color: #000;
+
+		.filter {
+			float: left;
+
+			li {
+				display: inline-block;
+				margin-right: 5px;
+			}
+
+			label {
+				$height: 28px;
+				display: inline-block;
+				height: 28px;
+				line-height: 28px;
+				@include border-radius($height / 2);
+				padding-left: 12px;
+				padding-right: 12px;
+				cursor: pointer;
+				@include transition-property(background-color, color);
+				@include transition-duration(.3s);
+				font-weight: $fontWeight-medium;
+			}
+
+			label:hover, input[type='radio']:checked + label {
+				background-color: #797979;
+				color: #fff;
+			}
+		}
+
+		.search-area {
+			float: right;
+
+			.search {
+				pointer-events: none;
+				color: #afafaf; //#252a34;
+				border-bottom: 1px solid #afafaf;//#5f636a;
+
+				input {
+					width: 235px;
+				}
+
+				button {
+					padding: 0;
+					font-size: 16px;
+				}
+			}
+		}
+	}
+
+	.transactions {
+		padding-left: 12px;
+		padding-right: 12px;
+
+		table {
+			width: 100%;
+		}
+
+		th {
+			font-size: 14px;
+			font-weight: $fontWeight-black;
+			padding: 7px 5px 12px;
+			text-align: left;
+		}
+
+		td {
+			padding: 7px 5px;
+			text-align: left;
+			font-weight: $fontWeight-medium;
+		}
+
+		.type {
+			position: relative;
+			top: 2px;
+			font-size: 15px;
+
+			&.incoming {
+				color: #27ae60;
+			}
+
+			&.outgoing {
+				color: #c0392b;
+			}
+
+			&.pending {
+				color: #d1d1d1;
+				font-size: 13px;
+			}
+		}
+
+		.sender, .message {
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			
+		}
+
+		.sender {
+			max-width: 150px;
+		}
+
+		.message {
+			max-width: 218px;
+		}
+
+		td.details {
+			font-weight: $fontWeight-bold;
+			color: #3498db;
+			text-decoration: underline;
+			cursor: pointer;
+		}
+
+		.confirmations {
+			text-align: center;
+		}
+
+		.fee, .amount {
+			text-align: right;
+		}
+	}
+
+	.dimmed {
+		color: #d1d1d1;
+	}
+
+	.no-transactions {
+		color: rgba(#000, .4);
+		font-size: 12px;
+		font-style: italic;
+		margin-top: 2em;
+	}
+}

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>NEM Network Crawler (Simple)</title>
+<style type="text/css">
+body {
+	margin: 0;
+}
+
+#container {
+	position: absolute;
+	width: 100%;
+	height: 90%;
+}
+
+a:hover {
+	background: yellow;
+	cursor: pointer;
+}
+</style>
+<script src="../scripts/plugins/jquery-2.1.0.min.js"></script>
+<script src="./sigma.min.js"></script>
+<script src="plugins/sigma.layout.forceAtlas2.min.js"></script>
+<script>
+	var sigmaGraph = new Object();
+</script>
+</head>
+<body>
+	<div id="headline">NEM Network Crawler (Simple)</div>
+	<div id="homeNode"></div>
+	<div id="container"></div>
+	<script>
+		function appendGraphFor(graphData, graph) {
+			for (var i = 0, len = graphData.nodes.length; i < len; i++) {
+				if (graph.nodes(graphData.nodes[i].id) == null) {
+					graph.addNode(graphData.nodes[i]);
+				}
+			}
+			for (var i = 0, len = graphData.edges.length; i < len; i++) {
+				if (graph.edges(graphData.edges[i].id) == null) {
+					graph.addEdge(graphData.edges[i]);
+				}
+			}
+
+		}
+		function showNetworkOf(url) {
+			var jqNodeInfo = $.getJSON("http://127.0.0.1:8989/ncc/api/network",
+					url, function(graphData, response) {
+						sigmaGraph = new sigma({
+							container : 'container',
+							graph : graphData
+						});
+
+						sigmaGraph.bind('clickNode', function(e) {
+							appendNetworkOf('url=' + e.data.node.url);
+							//console.log(e.type, e.data.node.label);
+						});
+
+						sigmaGraph.startForceAtlas2();
+
+						var homeNode = sigmaGraph.graph
+								.nodes(graphData.home.id);
+						homeNode.color = "#191970";
+
+					});
+		}
+
+		function appendNetworkOf(url) {
+			$('#homeNode').html('Retrieving peer list for ' + url);
+			var jqNodeInfo = $.getJSON("http://127.0.0.1:8989/ncc/api/network",
+					url, function(graphData, response) {
+						$('#homeNode').html('');
+						if (graphData.fault == null) {
+							appendGraphFor(graphData, sigmaGraph.graph);
+						}
+					});
+		}
+
+		showNetworkOf("");
+	</script>
+</body>
+</html>

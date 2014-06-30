@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Application-Name: NEM Community Client - NCC
+Implementation-Title: NEM Community Client - NCC
+Implementation-Version: 0.0.50-ALPHA
+Archiver-Version: Plexus Archiver
+Built-By: gimre
+Implementation-Vendor-Id: org.nem.ncc
+Implementation-Vendor: NEM - New Economy Movement
+Permissions: all-permissions
+Codebase: nem.pucchiwerk.eu
+Implementation-Build: 0.0.50-ALPHA
+Trusted-Only: true
+Created-By: Apache Maven 3.0.4
+Build-Jdk: 1.8.0_05
+

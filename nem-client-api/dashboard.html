@@ -1,0 +1,319 @@
+<main class="dashboard-page">
+	<div class="container gridster">
+		<ul id="dashboard">
+			<li class="tile assets" data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+				<article>
+					<h1 class="main-title">Your assets</h1>
+					<!--/*<div>
+						<p class="assets-count">0 <span class="unit">assets</span></p>
+					</div>*/-->
+					<p class="not-available whole">Not yet available in alpha release</p>
+				</article>
+				<div class="dragger"></div>
+			</li>
+			<li class="tile importance" data-row="1" data-col="2" data-sizex="2" data-sizey="1">
+				<article>
+					<h1 class="main-title">Importance Score</h1>
+					{{#status.lostConnection || activeAccount.status === 'UNKNOWN'}}
+						<button type="button" class="foraging-btn">
+							<span>Unknown status</span>
+						</button>
+					{{/}}
+					{{^status.lostConnection}}
+						{{#activeAccount.status === 'LOCKED'}}
+							<button type="button" class="foraging-btn icon-play" on-click="startForaging">
+								<span class="status">Not harvesting</span><span class="hover">Start harvesting</span>
+							</button>
+						{{/}}
+						{{#activeAccount.status === 'UNLOCKED'}}
+							<button type="button" class="foraging-btn icon-pause" on-click="stopForaging">
+								<span class="status">Harvesting</span><span class="hover">Stop harvesting</span>
+							</button>
+						{{/}}
+					{{/}}
+					<div class="content">
+						<p class="number">{{Math.round(activeAccount.importance * 10000) / 100}}%</p>
+						<p class="text">chance to hit the next block</p>
+					</div>
+				</article>
+				<div class="dragger"></div>
+			</li>
+			<li class="tile transactions" data-row="2" data-col="1" data-sizex="3" data-sizey="2">
+				<article>
+					<h1 class="main-title">Recent Transactions</h1>
+					<button type="button" class="send-nem-btn icon-paper-plane" on-click="openModal:'sendNem'">Send NEM</button>
+					<div class="overview">
+						<h1>Current Balance</h1>
+						<p><span class="balance" title="{{Math.floor(activeAccount.balance / 1000000)}} NEM {{activeAccount.balance % 1000000}} mNEM" on-mouseover="registerToolTip">{{{formatCurrency(activeAccount.balance, false)}}} <span class="unit">NEM</span></span></p>
+					</div>
+					<table>
+						<tr>
+							<th class="type"></th>
+							<th class="date">Date</th>
+							<th class="sender">Sender/Recipient</th>
+							<th class="message">Message</th>
+							<th class="details">Details</th>
+							<th class="confirmations">Confirmations</th>
+							<th class="fee">Fee <span class="dimmed">(NEM)</span></th>
+							<th class="amount">Amount <span class="dimmed">(NEM)</span></th>
+						</tr>
+						{{#allRecentTransactions:i}}
+							{{#i < 4}}
+								<tr>
+									{{#.isPending}}
+										<td class="type pending icon-clock" title="Pending transaction" on-mouseover="registerToolTip"></td>
+									{{/}}
+									{{^.isPending}}
+										{{#.isOutgoing}}
+											<td class="type outgoing icon-minus" title="Outgoing transaction" on-mouseover="registerToolTip"></td>
+										{{/}}
+										{{^.isOutgoing}}
+											<td class="type incoming icon-plus" title="Incoming transaction" on-mouseover="registerToolTip"></td>
+										{{/}}
+									{{/}}
+									<td class="date">{{formatDate(.timeStamp, 'M dd, yyyy hh:mm:ss')}}</td>
+									{{#.isOutgoing}}
+										<td class="sender" title="{{formatAddress(.recipient)}}" on-mouseover="registerToolTip">{{formatAddress(.recipient)}}</td>
+									{{/}}
+									{{^.isOutgoing}}
+										<td class="sender" title="{{formatAddress(.sender)}}" on-mouseover="registerToolTip">{{formatAddress(.sender)}}</td>
+									{{/}}
+									<td class="message">
+										{{#.message}}{{.message}}{{/}}
+										{{^.message}}<span class="dimmed">No message</span>{{/}}
+									</td>
+									<td class="details" on-click="viewTransaction:{{.}}">View</td>
+									<td class="confirmations">
+										{{#.isPending}}Pending{{/}}
+										{{^.isPending}}{{.confirmations}}{{/}}
+									</td>
+									<td class="fee">{{#.isOutgoing}}-{{/}}{{{formatCurrency(.fee, true)}}}</td>
+									<td class="amount">{{#.isOutgoing}}-{{/}}{{^.isOutgoing}}+{{/}}{{{formatCurrency(.amount, true)}}}</td>
+								</tr>
+							{{/}}
+						{{/}}
+					</table>
+					{{#allTransactions.length > 4 }}
+						<p class="see-all"><a href="javascript:;" on-click="redirect:'transactions'">See all transactions <span class="arrow icon-arrow-right"></span></a></p>
+					{{/}}
+					{{^allTransactions}}
+						<p class="no-transactions">No transactions have been performed yet</p>
+					{{/}}
+				</article>
+				<div class="dragger"></div>
+			</li>
+			<li class="tile nem-value" data-row="4" data-col="1" data-sizex="2" data-sizey="2">
+				<article>
+					<h1 class="main-title">NEM value statistics</h1>
+					<!--/*<p class="value">
+						4,158,666,000
+						<select id="nem-value-unit-chooser" class="unit">
+							<option value="btc">BTC</option>
+							<option value="usd">USD</option>
+							<option value="eur">EUR</option>
+						</select>
+						<span class="variation">
+							<span class="amount">15%</span>
+							<span class="arrow icon-arrow-down"></span>
+						</span>
+					</p>
+					<div id="nem-value-chart"></div>*/-->
+					<p class="not-available whole">Not yet available in alpha release</p>
+				</article>
+				<div class="dragger"></div>
+			</li>
+			<!--/*<li class="tile balance" data-row="1" data-col="2" data-sizex="2" data-sizey="1">
+				<article>
+					<h1>Your balance</h1>
+					<div>
+						<div class="last-month">
+							<p>Last month</p>
+							<p class="not-available">Not yet available in alpha release</p>
+							/*<p class="number">50,000,000 <span class="unit">NEM</span></p>*/
+						</div>
+						<div class="current">
+							<p>
+								/*<span class="variation">
+									<span class="arrow icon-arrow-up"></span>
+									<span class="amount">3%</span>
+								</span>*/
+								{{{formatCurrency(activeAccount.balance, false)}}} <span class="unit">NEM</span></p>
+						</div>
+					</div>
+				</article>
+				<div class="dragger"></div>
+			</li>*/-->
+			<li class="tile messages" data-row="4" data-col="3" data-sizex="1" data-sizey="1">
+				<article>
+					<h1 class="icon-envelope main-title" title="Messages" on-mouseover="registerToolTip"></h1>
+					<!--/*<div class="message-preview">
+						<div class="viewport">
+							<ul class="overview">
+								<li>
+									<article class="message">
+										<p>
+											&#8220;Are you willing to send me 1 coin in advance for the party tomorrow&#8221;
+											<a class="read-more" href="javascripts:;">Read more</a>
+										</p>
+										<footer>
+											<a href="account" class="sender">
+												<span>@Johny</span>
+												<img src="assets/ava_1.png" alt="Willy Tran" />
+											</a>
+										</footer>
+									</article>
+								</li>
+								<li>
+									<article class="message">
+										<p>
+											&#8220;Are you willing to send me 1 coin in advance for the party tomorrow&#8221;
+										</p>
+										<footer>
+											<a href="account" class="sender">
+												<span>@William Cuong</span>
+												<img src="assets/ava_1.png" alt="Willy Tran" />
+											</a>
+										</footer>
+									</article>
+								</li>
+								<li>
+									<article class="message">
+										<p>
+											&#8220;Are you willing to send me 1 coin in advance for the party tomorrow&#8221;
+										</p>
+										<footer>
+											<a href="account" class="sender">
+												<span>@Loi</span>
+												<img src="assets/ava_1.png" alt="Willy Tran" />
+											</a>
+										</footer>
+									</article>
+								</li>
+							</ul>
+						</div>
+						<ul class="bullets">
+							<li><a href="javascript:;" class="bullet" data-slide="0"></a></li>
+							<li><a href="javascript:;" class="bullet" data-slide="1"></a></li>
+							<li><a href="javascript:;" class="bullet" data-slide="2"></a></li>
+						</ul>
+					</div>*/-->
+					<p class="not-available whole">Not yet available in alpha release</p>
+				</article>
+				<div class="dragger"></div>
+			</li>
+			<!--/*<li class="tile apps" data-row="5" data-col="3" data-sizex="1" data-sizey="1">
+				<article>
+					<h1 class="main-title">NEM applications</h1>
+					<div class="scrollable">
+						<ul>
+							<li>
+								<article class="app">
+									<div class="app-icon">
+										<a href="app"><img src="assets/appicon_1.png" alt="App name"></a>
+									</div>
+									<div class="app-info">
+										<a href="app"><h1 title="App Name Goes Here">App Name Goes Here</h1></a>
+										<p class="vendor-name">Vendor Name</p>
+									</div>
+									<div class="delete-button">
+										<a class="icon-trash" href="javascript:;"></a>
+									</div>
+								</article>
+							</li>
+							<li>
+								<article class="app">
+									<div class="app-icon">
+										<a href="app"><img src="assets/appicon_1.png" alt="App name"></a>
+									</div>
+									<div class="app-info">
+										<a href="app"><h1 title="App Name Goes Here">App Name Goes Here</h1></a>
+										<p class="vendor-name">Vendor Name</p>
+									</div>
+									<div class="delete-button">
+										<a class="icon-trash" href="javascript:;"></a>
+									</div>
+								</article>
+							</li>
+							<li>
+								<article class="app">
+									<div class="app-icon">
+										<a href="app"><img src="assets/appicon_1.png" alt="App name"></a>
+									</div>
+									<div class="app-info">
+										<a href="app"><h1 title="App Name Goes Here">App Name Goes Here</h1></a>
+										<p class="vendor-name">Vendor Name</p>
+									</div>
+									<div class="delete-button">
+										<a class="icon-trash" href="javascript:;"></a>
+									</div>
+								</article>
+							</li>
+						</ul>
+					</div>
+					<p class="not-available whole">Not yet available in alpha release</p>
+				</article>
+				<div class="dragger"></div>
+			</li>*/-->
+			<li class="tile news" data-row="5" data-col="3" data-sizex="1" data-sizey="1">
+				<article>
+					<h1 class="icon-sound main-title" title="News" on-mouseover="registerToolTip"></h1>
+					<!--/*<div class="news-preview">
+						<div class="viewport">
+							<ul class="overview">
+								<li>
+									<article class="news-article">
+										<h1>Beta release 1</h1>
+										<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras porttitor urna ut justo sagittis ornare. Aliquam ... <a class="read-more" href="javascripts:;">Read more</a></p>
+									</article>
+								</li>
+								<li>
+									<article class="news-article">
+										<h1>Some News 2</h1>
+										<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras porttitor urna</p>
+									</article>
+								</li>
+								<li>
+									<article class="news-article">
+										<h1>Count to 3</h1>
+										<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras porttitor urna ut justo sagittis ornare. Aliquam... <a class="read-more" href="javascripts:;">Read more</a></p>
+									</article>
+								</li>
+							</ul>
+						</div>
+						<ul class="bullets">
+							<li><a href="javascript:;" class="bullet" data-slide="0"></a></li>
+							<li><a href="javascript:;" class="bullet" data-slide="1"></a></li>
+							<li><a href="javascript:;" class="bullet" data-slide="2"></a></li>
+						</ul>
+					</div>*/-->
+					<p class="not-available whole">Not yet available in alpha release</p>
+				</article>
+				<div class="dragger"></div>
+			</li>
+			<!--/*<li class="tile send" data-row="3" data-col="1" data-sizex="1" data-sizey="3">
+				<article>
+					<h1 class="main-title">Send NEM</h1>
+					<div class="content">
+						<div class="form-control amount">
+							<input type="text" placeholder="Amount" value="{{sendTransactionForm.amount}}" on-change={{formInputChange}} /><span class="unit">NEM</span>
+						</div>
+						<input type="text" placeholder="Recipient's account" class="recipient form-control" />
+						<textarea placeholder="Message" class="form-control" value="{{sendTransactionForm.message}}"></textarea>
+						<div class="form-control fee">
+							<label>Fee</label><input value="{{sendTransactionForm.fee}}" /><span class="unit">NEM</span>
+						</div>
+						<a href="javascript:;" class="set-fee" on-click="resetFee">Reset to minimum fee</a>
+						<div class="form-control due-by">
+							<label>Due by (hours)</label><input value="{{sendTransactionForm.dueBy}}" min="0" />
+						</div>
+						<input type="password" placeholder="Password" class="form-control" value="{{sendTransactionForm.password}}" on-keypress="sendFormKeypress" />
+						<div class="submit">
+							<button type="button" on-click="sendTransaction">Send</button>
+						</div>
+					</div>
+				</article>
+				<div class="dragger"></div>
+			</li>*/-->
+		</ul>
+	</div>
+</main>

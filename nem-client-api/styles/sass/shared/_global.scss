@@ -1,0 +1,66 @@
+@import 'compass';
+@import '../config';
+@import '../mixins';
+
+*, *:before, *:after {
+	@include box-sizing(border-box);
+}
+
+ul, ol {
+	margin: 0;
+	padding: 0;
+
+	li {
+		list-style-type: none;
+	}
+}
+
+a, a:hover, a:active {
+	color: inherit;
+	text-decoration: none;
+}
+
+a {
+	@include transition(color .3s);
+}
+
+h1, p {
+	margin: 0;
+}
+
+button, input, select, textarea {
+	border: none;
+	background-color: transparent;
+	outline: none;
+}
+
+html {
+	font-family: "Roboto", sans-serif;
+	color: #444444;
+}
+
+html, body {
+	height: 100%;
+}
+
+a {
+	@include transition(color .3s);
+}
+
+button, input[type='submit'], input[type='button'] {
+	@include transition-property(background-color, color);
+	@include transition-duration(.3s);
+}
+
+strong {
+	font-weight: $fontWeight-black;
+}
+
+em {
+	font-weight: $fontWeight-medium;
+	font-style: normal;
+}
+
+input[type="file"] {
+	
+}

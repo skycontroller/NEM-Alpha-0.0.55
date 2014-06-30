@@ -1,0 +1,281 @@
+<aside id="wallet-page-sidebar">
+	<div class="sidebar-head">
+		<div class="logo vmiddle-container">
+			<h1 on-click="closeWallet" class="vmiddle"><img src="images/nem_logo.png" alt="NEM - New Economy Movement" /></h1>
+		</div>
+		<div class="nav-toggler vmiddle-container">
+			<div class="vmiddle">
+				<button type="button" class="icon-menu">
+			</div>
+		</div>
+	</div>
+	<div class="sidebar-content">
+		<div>
+			<div class="active account {{#active.accountSelect}}selecting{{/}}">
+				<div class="account-info">
+					<p>
+						<a href="javascript:;" class="account-id copyClipboard" data-clipboard-text="{{formatAddress(activeAccount.address)}}" title="Click to copy address to clipboard" on-mouseover="registerToolTip">{{formatAddress(activeAccount.address)}}</a>
+						{{#activeAccount.address === wallet.primaryAccount.address}}
+							<span class="primary">primary</span>
+						{{/}}
+					</p>
+					{{#activeAccount.label}}
+						<p class="label {{^.privateLabel}}blank{{/}}">{{.privateLabel ? .privateLabel : '<No label>'}}</p>
+					{{/}}
+				</div>
+				{{#allAccounts.length > 1}}
+					<a href="javascript:;" class="drop-arrow icon-arrow-down-medium" on-click="toggleOn:'accountSelect'"></a>
+				{{/}}
+			</div>
+			<div class="account-select scrollable {{^active.accountSelect}}hidden{{/}}" id="accountSelect">
+				<ul>
+					{{#allAccounts}}
+						{{#.address !== activeAccount.address}}
+							<li class="account" on-click="switchAccount:{{.address}}">
+								<div class="account-info">
+									<p class="account-id">
+										{{formatAddress(.address)}}
+										{{#.address === wallet.primaryAccount.address}}
+											<span class="primary">primary</span>
+										{{/}}
+									</p>
+									{{#.label}}
+										<p class="label {{^.privateLabel}}blank{{/}}">{{.privateLabel ? .privateLabel : '<No label>'}}</p>
+									{{/}}
+								</div>
+							</li>
+						{{/}}
+					{{/}}
+				</ul>
+			</div>
+		</div>
+		<nav>
+			<ul>
+				<li class="{{#layout.1.name === 'dashboard'}}active{{/}}"><a href="javascript:;" on-click="redirect:'dashboard'">
+					<span class="item-title icon-home">Dashboard</span>
+				</a></li>
+				<li class="disabled {{#layout.1.name === 'messages'}}active{{/}}"><a href="javascript:;" on-click="redirect:'messages'">
+					<span class="item-title icon-envelope">Messages
+					<!--/*</span><span class="noti-box messages">4</span>*/-->
+				</a></li>
+				<li class="disabled {{#layout.1.name === 'contacts'}}active{{/}}"><a href="javascript:;" on-click="redirect:'contacts'">
+					<span class="item-title icon-users">Contacts</span>
+				</a></li>
+				<li class="{{#layout.1.name === 'transactions'}}active{{/}}"><a href="javascript:;" on-click="redirect:'transactions'">
+					<span class="item-title icon-transaction">Transactions
+					<!--/*</span><span class="noti-box transactions">2</span>*/-->
+				</a></li>
+				<li class="disabled {{#layout.1.name === 'assetExchange'}}active{{/}}"><a href="javascript:;" on-click="redirect:'assetExchange'">
+					<span class="item-title icon-portfolio">Assets Exchange</span>
+				</a></li>
+				<li class="disabled {{#layout.1.name === 'news'}}active{{/}}"><a href="javascript:;" on-click="redirect:'news'">
+					<span class="item-title icon-sound">News
+					<!--/*</span><span class="noti-box news">6</span>*/-->
+				</a></li>
+				<li class="disabled {{#layout.1.name === 'applications'}}active{{/}}"><a href="javascript:;" on-click="redirect:'applications'">
+					<span class="item-title icon-grid-alt">Application</span>
+				</a></li>
+				<li class="disabled {{#layout.1.name === 'accounts'}}active{{/}}"><a href="javascript:;" on-click="redirect:'accounts'">
+					<span class="item-title icon-user">Accounts</span>
+				</a></li>
+				<li class="disabled {{#layout.1.name === 'settings'}}active{{/}}"><a href="javascript:;" on-click="redirect:'settings'">
+					<span class="item-title icon-settings">Setting</span>
+				</a></li>
+				<li><a href="javascript:;" on-click="shutdown">
+					<span class="item-title icon-close">Close program</span>
+				</a></li>
+			</ul>
+		</nav>
+	</div>
+</aside>
+<div id="wallet-page-main-content">
+	<header id="wallet-page-header">
+		<div class="container">
+			<div class="search-area vmiddle-container">
+				<div class="vmiddle">
+					<div class="search-wrapper">
+						<button type="submit" id="search-btn" class="icon-magnifying-glass"></button>
+						<input type="text" />
+					</div>
+				</div>
+			</div>
+			<div class="temp-message vmiddle-container {{#tempMessage.visible}}in{{/}}">
+				<div class="vmiddle">
+					<p><em>{{tempMessage.message}}</em></p>
+				</div>
+			</div>
+			<div class="wallet-area vmiddle-container">
+				<div class="vmiddle">
+					<!--/*<div class="noti-area">
+						<a href="javascript:;" class="noti-box">4</a>
+						<div class="notifications">
+							<div class="scrollable">
+								<ul>
+									<li>
+										<article class="unread notification">
+											<a href="something">
+												<div class="image">
+													<img src="assets/ava_1.png">
+												</div>
+												<div class="message">
+													<p>@Johny <span class="surname">Nguyen</span></p>
+													<p class="content">Hello! Are you ok?</p>
+												</div>
+												<div class="time">
+													<span>11:14 PM</span>
+												</div>
+											</a>
+										</article>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>*/-->
+					<div class="wallet-info">
+						<p><a href="javascript:;" class="wallet-name">{{wallet.name}}</a></p>
+						<p><span class="last-access" title="Last access was {{toDate(wallet.lastRefresh).toString()}}" on-mouseover="registerToolTip">{{#daysPassed(wallet.lastRefresh)}}
+							{{#.roundedDays}}
+								About
+								{{.roundedDays}}
+								days ago
+							{{/}}
+							{{#.roundedDays === 0}}
+								Just now
+							{{/}}
+						{{/}}</span></p>
+					</div>
+					<a href="javascript:;"><img class="wallet-ava" src="assets/default-avatar.png" alt="{{wallet.name}}" /></a>
+					<div class="setting">
+						<a href="javascript:;" class="button icon-arrow-down-medium" on-click="toggleOn:'walletActions'"></a>
+						<div class="options {{^active.walletActions}}hidden{{/}}" id="walletActions">
+							<ul class="content">
+								<li on-click="refreshInfo">Refresh info</li>
+								<li class="separator" on-click="bootLocalNode">Boot local node</li>
+								<li class="disabled">Merge wallets</li>
+								<li class="disabled separator">Export wallet</li>
+								<li on-click="createNewAccount">Create new account</li>
+								<li on-click="addAccount">Add an existing account</li>
+								<li class="separator" on-click="setCurrentAccountAsPrimary">Set as primary account</li>
+								<li on-click="showClientInfo">Client Info</li>
+								<li on-click="closeWallet">Close wallet</li>
+								<li on-click="shutdown">Close program</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</header>
+	{{#layout.1.name}}{{>1}}{{/}}
+</div>
+<sendNemModal modalClass="sendNem" modalTitle="Send NEM">
+	<div class="form-control amount">
+		<input type="text" placeholder="Amount" value="{{amount}}" /><span class="unit">NEM</span>
+	</div>
+	<input type="text" placeholder="Recipient's account" class="recipient form-control" />
+	<p class="recipient-label">
+		{{#recipientLabel}}
+			This account is labeled as <strong>{{recipientLabel}}</strong>
+		{{/}}
+		{{#recipientLabel === ''}}
+			This account doesn't have a label
+		{{/}}
+	</p>
+	<textarea placeholder="Message" class="form-control" value="{{message}}"></textarea>
+	<div class="encrypt">
+		<input type="checkbox" checked="{{encrypted}}" id="chk-encrypt-message" />
+		<label for="chk-encrypt-message">Encrypt message</label>
+	</div>
+	<div class="row">
+		<div class="form-control fee">
+			<label>Fee</label><input value="{{fee}}" /><span class="unit">NEM</span>
+		</div>
+		<div class="form-control due-by">
+			<label>Due by (hours)</label><input value="{{dueBy}}" min="0" />
+		</div>
+	</div>
+	<a href="javascript:;" class="set-fee" on-click="resetFee">Reset to minimum fee</a>
+	<input type="password" placeholder="Password" class="form-control" value="{{password}}" on-keypress="sendFormKeypress" />
+	<div class="submit">
+		<button type="button" class="modal-button" on-click="sendTransaction">Send</button>
+	</div>
+</sendNemModal>
+<clientInfoModal modalClass="clientInfo wide" modalTitle="Client info">
+	<div class="logo">
+		<img src="images/nem_logo.png" alt="NEM - New Economy Movement">
+	</div>
+	<div class="info">
+		<div class="ncc-info">
+			<div class="block">
+				<p><strong>NEM Community Client - NCC</strong></p>
+				<p>{{metadata.version}}</p>
+			</div>
+			<div class="block">
+				<p><strong>Signer</strong> {{metadata.signer || 'N/A'}}</p>
+			</div>
+			<div class="block">
+				<p><strong>Remote Server</strong> {{remoteServer || 'Local'}}</p>
+			</div>
+		</div>
+		<div class="nis-info">
+			<div class="block">
+				<p><strong>NEM Infrastructure Server - NIS</strong></p>
+				<p>{{nisNode.metaData.version}}</p>
+			</div>
+			<div class="block">
+				<p><strong>Signer</strong> {{nisNode.metaData.signer || 'N/A'}}</p>
+			</div>
+			<div class="block">
+				<p>
+					<strong>
+						{{#nisNode.height === nisNode.maxHeight}}Synchronized{{/}}
+						{{#nisNode.height !== nisNode.maxHeight}}Not synchronized{{/}}
+					</strong>
+					{{#nisNode.maxHeight === -1}}Not connected to NEM Cloud{{/}}
+				</p>
+			</div>
+		</div>
+	</div>
+</clientInfoModal>
+<transactionDetailsModal modalClass="transaction-details wide" modalTitle="Transaction Details">
+	{{#transaction}}
+		<table>
+			<tr>
+				<td class="title">Transaction ID</td>
+				<td class="value">{{.id}}</td>
+			</tr>
+			<tr>
+				<td class="title">Transaction Type</td>
+				<td class="value">{{.isPending? 'Pending' : (.isOutgoing? 'Outgoing' : 'Incoming')}}</td>
+			</tr>
+			<tr>
+				<td class="title">Sender</td>
+				<td class="value">{{formatAddress(.sender)}}</td>
+			</tr>
+			<tr>
+				<td class="title">Recipient</td>
+				<td class="value">{{formatAddress(.recipient)}}</td>
+			</tr>
+			<tr>
+				<td class="title">Message</td>
+				<td class="value">{{.message}}{{^.message}}<span class="dimmed">No message</span>{{/}}</td>
+			</tr>
+			<tr>
+				<td class="title">Timestamp</td>
+				<td class="value">{{formatDate(.timeStamp, 'M dd, yyyy hh:mm:ss')}}</td>
+			</tr>
+			<tr>
+				<td class="title">Confirmations</td>
+				<td class="value">{{.confirmations}}</td>
+			</tr>
+			<tr>
+				<td class="title">Amount</td>
+				<td class="value">{{toNem(.amount)}} NEM</td>
+			</tr>
+			<tr>
+				<td class="title">Fee</td>
+				<td class="value">{{toNem(.fee)}} NEM</td>
+			</tr>
+		</table>
+	{{/}}
+</transactionDetailsModal>
