@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Application-Name: NEM Infrastructure Server
+Implementation-Title: NEM Infrastructure Server
+Implementation-Version: 0.0.55-ALPHA
+Archiver-Version: Plexus Archiver
+Built-By: bushmills16yo
+Implementation-Vendor-Id: org.nem.nis
+Implementation-Vendor: NEM - New Economy Movement
+Permissions: all-permissions
+Codebase: bob.nem.ninja
+Implementation-Build: 0.0.55-ALPHA
+Trusted-Only: true
+Created-By: Apache Maven 3.0.4
+Build-Jdk: 1.8.0_05
+
